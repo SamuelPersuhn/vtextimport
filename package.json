@@ -18,7 +18,10 @@
   "author": "Samuel Persuhn",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.344.0",
+    "@aws-sdk/lib-storage": "^3.344.0",
     "@prisma/client": "^4.14.1",
+    "aws-sdk": "^2.1389.0",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "bull": "^4.10.4",
