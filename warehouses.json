@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1019b24",
+    "name": "Estoque Principal",
+    "warehouseDocks": [
+      {
+        "dockId": "19f9e31",
+        "time": "00:00:00",
+        "cost": 0
+      }
+    ],
+    "pickupPointIds": [],
+    "priority": 0,
+    "isActive": true
+  }
+]

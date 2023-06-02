@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  vtex-api:
+    container_name: vtex-hook-api
+    ports:
+      - 8000:8000
+    build: .
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  database:
+    container_name: database
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB}

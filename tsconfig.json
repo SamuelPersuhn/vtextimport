@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "typeRoots": ["./node_modules/@types", "@types"],
+    "strictPropertyInitialization": false,
+    "sourceMap": true,
+    "lib": ["esnext"]
+  },
+  "exclude": ["jest.config.ts"]
+}

@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())  
+  email String @unique
+  password String
+
+  @@map("user")
+}
+
+model Order {
+  orderId String @id
+  sequence String
+  marketplaceOrderId String?
+  marketplaceServicesEndpoint String?
+  sellerOrderId String
+  Origin  String
+  affiliateId String?
+  allowCancellation Boolean
+  salesChannel String?
+  merchantName String?
+  status  String?
+  workflowIsInError Boolean
+  statusDescription String?
+  value Int
+  lastChange   String
+  creationDate  String
+  orderGroup  String
+
+  totals Totals[]
+
+
+}
+
+model Totals {
+
+  main_id BigInt @id @default(autoincrement())
+  id  String
+  name String
+  value Int
+
+  order Order @relation(references: [orderId], fields: [orderId])
+  orderId String
+
+}
