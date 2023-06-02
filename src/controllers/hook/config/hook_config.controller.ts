@@ -5,6 +5,7 @@ import { AppError } from "../../../errors/error";
 import { handleErrorMiddleware } from "../../../middlewares/handle_error.middleware";
 
 const hookConfigController = async (req: Request, res: Response) => {
+  console.log("hook config", {req})
   const HOOK_OPTIONS = JSON.stringify({
     filter: {
       type: "FromWorkflow",

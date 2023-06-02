@@ -13,6 +13,7 @@ interface IFromWorkerHook {
 }
 
 const hookResController = async (req: Request, res: Response) => {
+  console.log("hook ping", {req})
   try {
     const { OrderId }: IFromWorkerHook = req.body;
     await hookResService(OrderId);
