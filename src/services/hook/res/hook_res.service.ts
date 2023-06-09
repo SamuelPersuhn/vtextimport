@@ -1,8 +1,7 @@
 import axios from "axios";
 import { AppError } from "../../../errors/error";
 import fs from "node:fs/promises";
-import AWS from "aws-sdk"
-import "dotenv/config"
+import "dotenv/config";
 import { S3Client } from "../../../server/infra/bucket.controller";
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID!;
@@ -31,7 +30,6 @@ const hookResService = async (orderId: string) => {
       throw new AppError(err.response.data, 400);
     });
 
-   
   const openData = await fs.readFile("./data.json");
 
   const currentData = JSON.parse(openData.toString());
@@ -41,15 +39,21 @@ const hookResService = async (orderId: string) => {
 
   const s3Client = new S3Client(accessKeyId, secretAccessKey, region);
 
-  const s3PutRequest = s3Client.createPutPublicJsonRequest('socorro-25', `${new Date().toString()}-${orderId}.json`, JSON.stringify(getOrder))
+  const s3PutRequest = s3Client.createPutPublicJsonRequest(
+    "socorro-25",
+    `${new Date().toString()}-${orderId}.json`,
+    JSON.stringify(getOrder)
+  );
 
-  const s3Response = await s3Client.put(s3PutRequest).then((res) => {
-    console.log("deus e mais", res)
-    return res
-  }).catch((err)=> {
-    console.log("desiste", err)
-  })
-  
+  await s3Client
+    .put(s3PutRequest)
+    .then((res) => {
+      console.log("deus e mais", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log("desiste", err);
+    });
 };
 
 export { hookResService };
