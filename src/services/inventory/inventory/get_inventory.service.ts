@@ -26,10 +26,6 @@ const getInventoryService = async (
   let chunks: IListInventory[] = [];
 
   for (let i: number = 0; i < skus.length; i++) {
-    console.log(
-      `https://${process.env.VTEX_ACCOUNT}.${process.env.VTEX_ENVIRONMENT}.com.br/api/logistics/pvt/inventory/items/${skus[i]}/warehouses/${warehouse}`
-    );
-
     const response: IListInventory[] = await axios
       .get(
         `https://${process.env.VTEX_ACCOUNT}.${process.env.VTEX_ENVIRONMENT}.com.br/api/logistics/pvt/inventory/items/${skus[i]}/warehouses/${warehouse}`,
@@ -46,9 +42,6 @@ const getInventoryService = async (
       .catch((err) => {
         throw new AppError(err, 400);
       });
-
-    console.log({ response });
-
     chunks = [...chunks, ...response];
   }
   await fs.writeFile("./inventory.json", JSON.stringify(chunks, null, 2));

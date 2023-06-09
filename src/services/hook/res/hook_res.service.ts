@@ -13,6 +13,8 @@ const hookResService = async (orderId: string) => {
   if (!orderId) {
     return;
   }
+  console.log("Order hook received");
+
   const getOrder = await axios
     .get(
       `https://${process.env.VTEX_ACCOUNT}.${process.env.VTEX_ENVIRONMENT}.com.br/api/oms/pvt/orders/${orderId}`,
@@ -48,7 +50,7 @@ const hookResService = async (orderId: string) => {
   await s3Client
     .put(s3PutRequest)
     .then((res) => {
-      console.log("deus e mais", res);
+      console.log("order hook - s3 builded", res);
       return res;
     })
     .catch((err) => {

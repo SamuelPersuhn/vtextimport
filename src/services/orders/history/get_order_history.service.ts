@@ -41,7 +41,7 @@ const getHistoryOrdersService = async ({
       throw new AppError(err.response.data, 400);
     });
 
-  console.log(getAmoutOfPages.paging.total);
+  console.log("Pages: ", getAmoutOfPages.paging.total);
 
   for (let i: number = 0; i < getAmoutOfPages.paging.total; i++) {
     const orderHistory = await axios
@@ -61,7 +61,7 @@ const getHistoryOrdersService = async ({
         throw new AppError(err.response.data, 400);
       });
 
-    page++;
+    page += 1;
     for (let x: number = 0; x < orderHistory.list.length; x++) {
       const s3PutRequest = s3Client.createPutPublicJsonRequest(
         "socorro-25",
