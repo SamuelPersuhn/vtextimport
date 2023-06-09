@@ -8,23 +8,23 @@ const hookInventoryService = async (payload: any): Promise<void> => {
 
   await fs.writeFile("./hook_inventory.json", JSON.stringify(payload, null, 2));
 
-  const s3Client = new S3Client(accessKeyId, secretAccessKey, region);
+  //   const s3Client = new S3Client(accessKeyId, secretAccessKey, region);
 
-  const s3PutRequest = s3Client.createPutPublicJsonRequest(
-    "socorro-25/inventory/",
-    `${new Date().toString()}.json`,
-    JSON.stringify(payload)
-  );
+  //   const s3PutRequest = s3Client.createPutPublicJsonRequest(
+  //     "socorro-25/inventory/",
+  //     `${new Date().toString()}.json`,
+  //     JSON.stringify(payload)
+  //   );
 
-  await s3Client
-    .put(s3PutRequest)
-    .then((res) => {
-      console.log("hook inventory --");
-      return res;
-    })
-    .catch((err) => {
-      console.log("hook inventory -- error:", err);
-    });
+  //   await s3Client
+  //     .put(s3PutRequest)
+  //     .then((res) => {
+  //       console.log("hook inventory --");
+  //       return res;
+  //     })
+  //     .catch((err) => {
+  //       console.log("hook inventory -- error:", err);
+  //     });
 
   return;
 };
