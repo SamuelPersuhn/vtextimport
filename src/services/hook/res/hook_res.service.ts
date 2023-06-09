@@ -1,6 +1,5 @@
 import axios from "axios";
 import { AppError } from "../../../errors/error";
-import fs from "node:fs/promises";
 import "dotenv/config";
 import { S3Client } from "../../../server/infra/bucket.controller";
 
@@ -32,29 +31,23 @@ const hookResService = async (orderId: string) => {
       throw new AppError(err.response.data, 400);
     });
 
-  const openData = await fs.readFile("./data.json");
-
-  const currentData = JSON.parse(openData.toString());
-  currentData.push({ getOrder });
-
-  await fs.writeFile("./data.json", JSON.stringify(currentData, null, 2));
-
   const s3Client = new S3Client(accessKeyId, secretAccessKey, region);
 
   const s3PutRequest = s3Client.createPutPublicJsonRequest(
     "socorro-25",
-    `${new Date().toString()}-${orderId}.json`,
+    `${new Date().toString()}-${orderId}-${Math.random().toString()}.json`,
     JSON.stringify(getOrder)
   );
 
   await s3Client
     .put(s3PutRequest)
     .then((res) => {
-      console.log("order hook - s3 builded", res);
+      console.log("order hook - s3 builded");
       return res;
     })
     .catch((err) => {
       console.log("desiste", err);
+      return err;
     });
 };
 
