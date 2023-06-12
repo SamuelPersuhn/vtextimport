@@ -51,7 +51,7 @@ const getInventoryService = async (
     const s3PutRequest = s3Client.createPutPublicJsonRequest(
       "socorro-25/inventory",
       `${new Date().toString()}-${skus[i]}-${Math.random().toString()}.json`,
-      JSON.stringify(response)
+      JSON.stringify(response[0])
     );
 
     await s3Client
