@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AppError } from "../../../errors/error";
 import fs from "node:fs/promises";
+import { S3Client } from "../../../server/infra/bucket.controller";
 
 interface IListInventory {
   skuId: string;
@@ -22,8 +23,10 @@ interface IListInventory {
 const getInventoryService = async (
   skus: Array<number>,
   warehouse: string
-): Promise<IListInventory[]> => {
-  let chunks: IListInventory[] = [];
+): Promise<void> => {
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID!;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY!;
+  const region = process.env.S3_REGION!;
 
   for (let i: number = 0; i < skus.length; i++) {
     const response: IListInventory[] = await axios
@@ -40,12 +43,28 @@ const getInventoryService = async (
       )
       .then((res) => res.data)
       .catch((err) => {
-        throw new AppError(err, 400);
+        throw new AppError(err.response.data, 400);
       });
-    chunks = [...chunks, ...response];
+
+    const s3Client = new S3Client(accessKeyId, secretAccessKey, region);
+
+    const s3PutRequest = s3Client.createPutPublicJsonRequest(
+      "socorro-25/inventory",
+      `${new Date().toString()}-${skus[i]}-${Math.random().toString()}.json`,
+      JSON.stringify(response)
+    );
+
+    await s3Client
+      .put(s3PutRequest)
+      .then((res) => {
+        console.log("INVENTORY - s3 builded");
+        return res;
+      })
+      .catch((err) => {
+        console.log("desiste", err);
+        return err;
+      });
   }
-  await fs.writeFile("./inventory.json", JSON.stringify(chunks, null, 2));
-  return chunks;
 };
 
 export { getInventoryService };

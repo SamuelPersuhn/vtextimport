@@ -8,11 +8,7 @@ const catalogAndIventory = async (req: Request, res: Response) => {
   console.log("Inventory list run!");
   const warehouse = await getWareHousesService();
   const skus = await stackSkusListService();
-  const inventory = await getInventoryService(skus, warehouse[0].id);
-  if (inventory.length >= skus.length) {
-    console.log("Inventory updated!");
-    return;
-  }
+  await getInventoryService(skus, warehouse[0].id);
   return;
 };
 
